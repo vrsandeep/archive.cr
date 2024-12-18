@@ -154,12 +154,15 @@ module Archive
     #   This is useful when checking the integrity of the archive.
     def check
       reader do |r|
+        all_zero_files = false
         r.entries do |e|
           next unless e.info.file?
           e.file = self
-          e.read
-          break
+          data = e.read
+          break if data.size > 0
+          all_zero_files = true
         end
+        raise Error.new "No file entries found in the archive" if all_zero_files
       end
     end
   end
