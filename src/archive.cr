@@ -90,7 +90,7 @@ module Archive
 
         buffer = Bytes.new e.size
         read_size = LibArchive.archive_read_data @a, buffer, e.size
-        raise? if read_size < 0
+        raise? if read_size <= 0
 
         yield buffer
       end
