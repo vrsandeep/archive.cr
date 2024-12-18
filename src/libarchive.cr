@@ -7,6 +7,7 @@ lib LibArchive
   type Archive = Void*
   type ArchiveEntry = Void*
 
+  # https://github.com/libarchive/libarchive/blob/819a50a0436531276e388fc97eb0b1b61d2134a3/libarchive/archive.h#L190
   enum Status
     EOF    =   1
     OK     =   0

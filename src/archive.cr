@@ -27,7 +27,7 @@ module Archive
   class Entry
     getter filename : String
     getter size : LibC::SizeT
-    getter info : Crystal::System::FileInfo
+    getter info : ::File::Info
 
     property file : File?
 
@@ -75,7 +75,7 @@ module Archive
         name = String.new char_ptr
 
         stat = LibArchive.archive_entry_stat(e).value
-        info = Crystal::System::FileInfo.new stat
+        info = ::File::Info.new stat
         entry = Entry.new name, size, info
 
         yield entry
@@ -154,12 +154,15 @@ module Archive
     #   This is useful when checking the integrity of the archive.
     def check
       reader do |r|
+        all_zero_files = false
         r.entries do |e|
           next unless e.info.file?
           e.file = self
-          e.read
-          break
+          data = e.read
+          break if data.size > 0
+          all_zero_files = true
         end
+        raise Error.new "No file entries found in the archive" if all_zero_files
       end
     end
   end
