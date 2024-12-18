@@ -27,7 +27,7 @@ module Archive
   class Entry
     getter filename : String
     getter size : LibC::SizeT
-    getter info : Crystal::System::FileInfo
+    getter info : File::Info
 
     property file : File?
 
@@ -75,7 +75,7 @@ module Archive
         name = String.new char_ptr
 
         stat = LibArchive.archive_entry_stat(e).value
-        info = Crystal::System::FileInfo.new stat
+        info = File::Info.new stat
         entry = Entry.new name, size, info
 
         yield entry

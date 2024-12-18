@@ -1,19 +1,18 @@
 name: CI
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    types: ['opened', 'reopened', 'synchronize', 'ready_for_review']
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: crystallang/crystal:0.34.0-alpine
+      image: crystallang/crystal:1.6.0-alpine
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Install dependencies
       run: apk add --no-cache libarchive-dev
     - name: Test
