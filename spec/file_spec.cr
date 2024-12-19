@@ -63,8 +63,20 @@ describe Archive::File do
       end
     end
 
-    it "raises on solid archives" do
+    it "does not raise when archive is empty files" do
       Archive::File.open "spec/asset/solid.cbr" do |f|
+        f.check
+      end
+    end
+
+    it "handles one empty file" do
+      Archive::File.open "spec/asset/one_empty.cbz" do |f|
+        f.check
+      end
+    end
+
+    it "raise exception when all files are empty" do
+      Archive::File.open "spec/asset/all_empty.cbz" do |f|
         expect_raises Archive::Error do
           f.check
         end

@@ -159,7 +159,7 @@ module Archive
           next unless e.info.file?
           e.file = self
           data = e.read
-          break if data.size > 0
+          all_zero_files = false; break if data.size > 0
           all_zero_files = true
         end
         raise Error.new "No file entries found in the archive" if all_zero_files
